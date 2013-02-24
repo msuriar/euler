@@ -1,61 +1,29 @@
 #!/usr/bin/env python
 
-def divisors(n):
-  limit = n/2
-  output = []
-  for i in xrange(1,limit+1):
-    if n % i == 0:
-      output.append(i)
-  return output
-
-def abundant(n):
-  return sum(divisors(n)) > n
-
-def perfect(n):
-  return sum(divisors(n)) == n
-
-def deficient(n):
-  return sum(divisors(n)) < n
-
-def abundants(limit):
-  output =[]
-  for i in xrange(12,limit+1):
-    if abundant(i):
-      output.append(i)
-  return output
-
-def abundant_pairs(limit,v=False):
-  a = abundants(limit)
-  c = [False]*(limit+1)
-  if v:
-    print "a: " , a
-    print "len(a): %d" % len(a)
-    print "C: " , c
-    print "len(c): %d" % len(c)
-  for i in xrange(len(a)):
-    current = a[i]
-    if v: print "Current: %d" % current
-    if 2*current < len(c):
-      if v: print "Setting c[%d] : True\n" % (2*current)
-      c[2*current] = True
-
-    for j in xrange(i+1,len(a)):
-      pair = a[j]
-      if current+pair >= len(c):
-        break
-      else:
-        c[current+pair] = True
-  return c
-
 def main():
-  c = abundant_pairs(21823)
-  # a = abundants(100)
-  # print a
+  print score_file('names.txt')
+
+def score_file(filename):
+  l = get_data(filename)
   total = 0
-  for i in xrange(len(c)):
-    if not c[i]:
-      total += i
-  print total
+  for i in xrange(len(l)):
+    total += (i+1) * score_word(l[i])
+  return total
+
+
+def score_word(w):
+  word = w.upper()
+  total = 0
+  for c in word:
+    total += ord(c) - 64
+  return total
+
+def get_data(filename):
+  f = open(filename)
+  d = f.read()
+  f.close()
+  l = sorted([ x.strip('"') for x in d.split(',') ])
+  return l
 
 if __name__ == "__main__":
   main()

@@ -1,29 +1,26 @@
 #!/usr/bin/env python
 
 def main():
-  print score_file('names.txt')
-
-def score_file(filename):
-  l = get_data(filename)
   total = 0
-  for i in xrange(len(l)):
-    total += (i+1) * score_word(l[i])
-  return total
+  for i in xrange(10000):
+    if is_amicable(i):
+      total += i
+  print total
 
+def is_amicable(n):
+  return d(d(n)) == n and d(n) != n
 
-def score_word(w):
-  word = w.upper()
-  total = 0
-  for c in word:
-    total += ord(c) - 64
-  return total
+def d(n):
+  return sum(divisors(n))
 
-def get_data(filename):
-  f = open(filename)
-  d = f.read()
-  f.close()
-  l = sorted([ x.strip('"') for x in d.split(',') ])
-  return l
+def divisors(n):
+  results = []
+  limit = n/2
+  for d in xrange(limit, 0, -1):
+    if n % d == 0:
+      results.append(d)
+
+  return results
 
 if __name__ == "__main__":
   main()

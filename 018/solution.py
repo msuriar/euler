@@ -47,6 +47,27 @@ def get_parents(node, data):
     else:
       return ((r-1, c-1),(r-1,c))
 
+def make_score_tree(data):
+  scores = []
+  for row in data:
+    scores.append([0]*len(row))
+  return scores
+
+def find_max_values(l,t):
+  v = 0
+  for r,c in l:
+    v = max(v,t[r][c])
+  return v
+
+
+def score(d,s):
+  s[-1] = d[-1][:]
+  for r in xrange(len(d)-2,-1, -1):
+    for i in xrange(len(s[r])):
+      print "Row: %d ; Item: %d" % (r,i)
+      s[r][i] = d[r][i] + find_max_values(get_children((r,i), s), s)
+  return s
+
 def main():
   d = parse_data(smalldata)
   print get_children((0,0), d)
@@ -54,6 +75,12 @@ def main():
   print get_parents((3,1), d)
   print get_parents((3,3), d)
   print d
+
+  s = make_score_tree(d)
+  print s
+
+  s = score(d,s)
+  print s
 
 if __name__ == "__main__":
   main()

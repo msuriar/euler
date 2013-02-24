@@ -60,27 +60,19 @@ def find_max_values(l,t):
   return v
 
 
-def score(d,s):
+def score(d):
+  s = make_score_tree(d)
   s[-1] = d[-1][:]
   for r in xrange(len(d)-2,-1, -1):
     for i in xrange(len(s[r])):
-      print "Row: %d ; Item: %d" % (r,i)
       s[r][i] = d[r][i] + find_max_values(get_children((r,i), s), s)
   return s
 
 def main():
-  d = parse_data(smalldata)
-  print get_children((0,0), d)
-  print get_parents((3,0), d)
-  print get_parents((3,1), d)
-  print get_parents((3,3), d)
-  print d
+  d = parse_data(bigdata)
 
-  s = make_score_tree(d)
-  print s
-
-  s = score(d,s)
-  print s
+  s = score(d)
+  print s[0][0]
 
 if __name__ == "__main__":
   main()
